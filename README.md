@@ -3,8 +3,8 @@
 > **Gerador técnico, local e auditável de `configuration.xml` para Office LTSC 2024, Project LTSC 2024 e Visio LTSC 2024 com o Office Deployment Tool (ODT).**
 
 [![Idioma: pt-BR](https://img.shields.io/badge/idioma-pt--BR-1f6feb)](#idioma-e-convencoes)
-[![Aplicação: 1.1.0](https://img.shields.io/badge/aplica%C3%A7%C3%A3o-1.1.0-8250df)](#historico-desta-edicao)
-[![Snapshot: 2026-08-30](https://img.shields.io/badge/snapshot-2026--08--30-238636)](#snapshot-e-politica-de-validacao)
+[![Aplicação: 1.1.2](https://img.shields.io/badge/aplica%C3%A7%C3%A3o-1.1.2-8250df)](#historico-desta-edicao)
+[![Snapshot: 2026-09-27](https://img.shields.io/badge/snapshot-2026--09--27-238636)](#snapshot-e-politica-de-validacao)
 [![Estado: baseline pública](https://img.shields.io/badge/estado-baseline_p%C3%BAblica-d29922)](#status-editorial)
 [![ODT: Office LTSC 2024](https://img.shields.io/badge/ODT-Office_LTSC_2024-8A5A2B)](#produtos-e-edicoes)
 [![Execução: client-side](https://img.shields.io/badge/execu%C3%A7%C3%A3o-client--side-2ea44f)](#privacidade-e-dependencias)
@@ -79,7 +79,7 @@
 
 O **DeployOfficeXML** é uma aplicação HTML/CSS/JavaScript executada inteiramente no navegador que transforma opções relevantes do **Office Deployment Tool (ODT)** em um arquivo `configuration.xml` legível, validável e reutilizável.
 
-O projeto é deliberadamente focado em implantações de **Office LTSC 2024 Volume**, **Project 2024 Volume** e **Visio LTSC 2024 Volume**. Ele não substitui o licenciamento da Microsoft, não ativa software sem infraestrutura ou chave válida, não consulta servidores para validar MAK e não pretende reproduzir integralmente o Office Customization Tool.
+O projeto é deliberadamente focado em implantações de **Office LTSC 2024 Volume**, **Project 2024 Volume** e **Visio LTSC 2024 Volume**. Ele não substitui o licenciamento da Microsoft, não ativa software sem infraestrutura ou chave válida, não consulta servidores para validar MAK e não pretende reproduzir integralmente o **Office Customization Tool (OCT)**. O OCT é o configurador oficial da Microsoft para criação e gerenciamento de arquivos de configuração em cenários mais amplos; o DeployOfficeXML mantém um escopo especializado em LTSC 2024 Volume, com foco em transparência do XML, validação local e orientação de implantação com o ODT.
 
 A aplicação cobre seleção de produtos, edições, arquitetura, origem, idiomas, aplicativos, atualização, ativação, remoção, validação, geração do XML e orientação de implantação.
 
@@ -155,7 +155,7 @@ A aplicação não envia os valores preenchidos a um backend. A engine mantém o
 
 ## Status editorial
 
-Este README é a **referência técnica pública da aplicação v1.1.0**. Ele documenta o comportamento efetivamente implementado no `index.html` e separa comportamento da aplicação, regras oficiais do ODT e recomendações operacionais.
+Este README é a **referência técnica pública da aplicação v1.1.2**. Ele documenta o comportamento efetivamente implementado no `index.html` e separa comportamento da aplicação, regras oficiais do ODT e recomendações operacionais.
 
 A estrutura documental segue o nível de referência técnica solicitado: badges no topo, atalhos, índice navegável, tópicos e subtópicos, tabelas, Mermaid, glossário, referências e histórico.
 
@@ -190,7 +190,7 @@ A estrutura documental segue o nível de referência técnica solicitado: badges
 
 ### Snapshot e política de validação
 
-**Snapshot documental: 2026-08-30.**
+**Snapshot documental: 2026-09-27.**
 
 IDs, canais e comportamento podem mudar. Antes de produção, valide novamente a documentação oficial e teste o XML no ambiente alvo.
 
@@ -1382,6 +1382,13 @@ Para qualquer outro produto MSI, use o Setup ID de `Setup.xml`. Não adivinhe.
 - Atualizações / PerpetualVL2024  
   https://learn.microsoft.com/pt-br/office/ltsc/2024/update
 
+### Office Customization Tool (OCT)
+
+- Configurador oficial  
+  https://config.office.com/deploymentsettings
+- Visão geral do OCT  
+  https://learn.microsoft.com/pt-br/microsoft-365-apps/admin-center/overview-office-customization-tool
+
 ### ODT
 
 - Opções de configuração  
@@ -1389,7 +1396,7 @@ Para qualquer outro produto MSI, use o Setup ID de `Setup.xml`. Não adivinhe.
 - Product IDs suportados  
   https://learn.microsoft.com/en-us/microsoft-365/troubleshoot/installation/product-ids-supported-office-deployment-click-to-run
 - Download oficial  
-  https://www.microsoft.com/pt-br/download/details.aspx?id=49117
+  https://www.microsoft.com/en-us/download/details.aspx?id=49117
 
 ### Remoção / migração
 
@@ -1446,6 +1453,31 @@ Este README não inventa uma licença. Antes de publicar uma `LICENSE`, defina e
 <a id="historico-desta-edicao"></a>
 
 ## 23. Histórico desta edição
+
+### 1.1.2 — 2026-09-27
+
+Patch corretivo de qualidade, acessibilidade, validação e consistência interna, **sem alterar o payload embutido do `INSTALAR.cmd` e preservando o XML ODT nos cenários não afetados**.
+
+- corrigida a semântica HTML/ARIA de labels, toggle de tema, estados de botões e hierarquia de headings;
+- removidos CSS morto/redundante e reprocessamentos JavaScript comprovadamente desnecessários;
+- corrigida a validação de `UpdatePath` HTTP/HTTPS para rejeitar URLs sintaticamente inválidas;
+- corrigido o syntax highlighting de atributos XML contendo entidades escapadas;
+- `prefers-reduced-motion` agora também é respeitado pelo scroll acionado via JavaScript;
+- o aviso de `Remove All` agora acompanha corretamente o modo de remoção selecionado;
+- preservados os estados de `includePidKey` e `AUTOACTIVATE` durante a troca entre KMS/ADBA, MAK e configuração posterior;
+- atualizado o download oficial do Office Deployment Tool para `https://www.microsoft.com/en-us/download/details.aspx?id=49117`, pois o endpoint localizado em `pt-br` deixou de estar disponível;
+- snapshot documental revalidado em 2026-09-27 contra referências oficiais aplicáveis;
+- Gate Final aprovado com regressão não detectada nos testes executados;
+- payload `INSTALAR.cmd` preservado byte a byte, com SHA-256 `9ecc6196235752f33cacec3a0fdb6d87b1b4c7e1c08fda026cf71dcfef256c91`.
+
+### 1.1.1 — 2026-09-27
+
+Atualização editorial de posicionamento e referências, **sem alterar a engine ODT/XML**.
+
+- adicionada referência explícita ao Office Customization Tool (OCT) oficial da Microsoft;
+- esclarecida a diferença de escopo entre o OCT, voltado a cenários mais amplos, e o DeployOfficeXML, especializado em LTSC 2024 Volume;
+- adicionados o configurador oficial e a documentação do OCT às referências primárias;
+- nenhuma lógica de Product ID, PIDKEY, idioma, remoção, XML, validação, wrapper, CSS ou JavaScript foi alterada.
 
 ### 1.1.0 — 2026-08-30
 
